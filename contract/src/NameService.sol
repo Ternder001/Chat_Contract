@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.20;
 
-import {LibNSErrors, LibNSEvents} from "./libraries/LibNameService.sol";
+import {LibENSErrors, LibENSEvents} from "./libraries/LibNameService.sol";
 
 contract NameService {
     struct DomainDetails {
@@ -17,7 +17,7 @@ contract NameService {
         string memory _domainName
     ) public view returns (string memory, string memory, address) {
         if (nameToAddress[_domainName] == address(0)) {
-            revert LibNSErrors.DomainNotRegistered();
+            revert LibENSErrors.DomainNotRegistered();
         }
 
         return (
@@ -32,7 +32,7 @@ contract NameService {
         string memory _avatarURI
     ) public {
         if (nameToAddress[_domainName] != address(0)) {
-            revert LibNSErrors.NameAlreadyTaken();
+            revert LibENSErrors.NameAlreadyTaken();
         }
         nameToAddress[_domainName] = msg.sender;
         domains[_domainName] = DomainDetails(
@@ -41,7 +41,7 @@ contract NameService {
             msg.sender
         );
 
-        emit LibNSEvents.NameRegistered(msg.sender, _domainName);
+        emit LibENSEvents.NameRegistered(msg.sender, _domainName);
     }
 
     function updateDomainAvatar(
@@ -49,13 +49,13 @@ contract NameService {
         string memory _avatarURI
     ) public {
         if (nameToAddress[_domainName] == address(0)) {
-            revert LibNSErrors.DomainNotRegistered();
+            revert LibENSErrors.DomainNotRegistered();
         }
         if (nameToAddress[_domainName] != msg.sender) {
-            revert LibNSErrors.NotDomainOwner();
+            revert LibENSErrors.NotDomainOwner();
         }
 
         domains[_domainName].avatarURI = _avatarURI;
-        emit LibNSEvents.AvatarUpdated(msg.sender, _domainName);
+        emit LibENSEvents.AvatarUpdated(msg.sender, _domainName);
     }
 }

@@ -4,7 +4,10 @@
   padding: 2rem;
   text-align: center;
 }
-
+body{
+  background-image: url("../public/images/bg.jpg");
+  background-color: #0e0e0eaa;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
